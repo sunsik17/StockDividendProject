@@ -3,7 +3,6 @@ package com.zerobase.stockdividendproject.web;
 import com.zerobase.stockdividendproject.model.Company;
 import com.zerobase.stockdividendproject.persist.entity.CompanyEntity;
 import com.zerobase.stockdividendproject.service.CompanyService;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
