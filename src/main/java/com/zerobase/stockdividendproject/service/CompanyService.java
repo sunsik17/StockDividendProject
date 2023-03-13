@@ -10,6 +10,9 @@ import com.zerobase.stockdividendproject.scraper.Scraper;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.Trie;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -17,7 +20,9 @@ import org.springframework.util.ObjectUtils;
 @AllArgsConstructor
 public class CompanyService {
 
+	private final Trie trie;
 	private final Scraper yahooFinanceScraper;
+
 	private final CompanyRepository companyRepository;
 	private final DividendRepository dividendRepository;
 
@@ -30,6 +35,9 @@ public class CompanyService {
 		return this.storeCompanyAndDividend(ticker);
 	}
 
+	public Page<CompanyEntity> getAllCompany(Pageable pageable) {
+		return this.companyRepository.findAll(pageable);
+	}
 	private Company storeCompanyAndDividend(String ticker) {
 		// ticker 를 기준으로 회사를 스크래핑
 		Company company = this.yahooFinanceScraper.scrapCompanyByTicker(ticker);
@@ -51,4 +59,16 @@ public class CompanyService {
 		return company;
 	}
 
+	public void addAutocompleteKeyword(String keyword) {
+		this.trie.put(keyword, null);
+	}
+
+	public List<String> autoComplete(String keyword) {
+		return (List<String>) this.trie.prefixMap(keyword).keySet()
+				.stream().collect(Collectors.toList());
+	}
+
+	public void deleteAutoCompleteKeyword(String keyword) {
+		this.trie.remove(keyword);
+	}
 }
