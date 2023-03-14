@@ -34,7 +34,8 @@ public class YahooFinanceScraper implements Scraper {
 			Connection connection = Jsoup.connect(url);
 			Document document = connection.get();
 
-			Elements parsingDivs = document.getElementsByAttributeValue("data-test", "historical-prices");
+			Elements parsingDivs = document.getElementsByAttributeValue("data-test",
+				"historical-prices");
 			Element table = parsingDivs.get(0);
 
 			Element tbody = table.children().get(1);

@@ -19,7 +19,7 @@ import lombok.ToString;
 @Table(
 	uniqueConstraints = {
 		@UniqueConstraint(
-			columnNames = { "companyId", "date" }
+			columnNames = {"companyId", "date"}
 		)
 	}
 )
