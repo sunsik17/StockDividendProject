@@ -28,11 +28,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 		String token = this.resolveTokenFromRequest(request);
-		log.info(StringUtils.hasText(token) ? token + "2==============" : "2==============");
+		log.debug(StringUtils.hasText(token) ? token + "2==============" : "2==============");
 		if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
 			Authentication auth = this.tokenProvider.getAuthentication(token);
-			log.info("8===================" + auth);
+			log.debug("8===================" + auth);
 			SecurityContextHolder.getContext().setAuthentication(auth);
+			log.info(String.format("[%s] ->  %s", this.tokenProvider.getUsername(token), request.getRequestURI()));
 		}
 
 		filterChain.doFilter(request, response);
@@ -41,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private String resolveTokenFromRequest(HttpServletRequest request) {
 		String token = request.getHeader(TOKEN_HEADER);
 
-		log.info(token + "1==============");
+		log.debug(token + "1==============");
 		if (!ObjectUtils.isEmpty(token) && token.startsWith(TOKEN_PREFIX)) {
 			return token.substring(TOKEN_PREFIX.length());
 		}

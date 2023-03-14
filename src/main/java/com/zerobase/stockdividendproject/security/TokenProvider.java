@@ -45,9 +45,9 @@ public class TokenProvider {
 	}
 
 	public Authentication getAuthentication(String jwt) {
-		log.info("6=============== jwt -> "+jwt);
+		log.debug("6=============== jwt -> "+jwt);
 		UserDetails userDetails = this.memberService.loadUserByUsername(this.getUsername(jwt));
-		log.info("7===============" + this.getUsername(jwt));
+		log.debug("7===============" + this.getUsername(jwt));
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}
 
@@ -56,13 +56,13 @@ public class TokenProvider {
 	}
 
 	public boolean validateToken(String token) {
-		log.info(StringUtils.hasText(token) ? token + "3==============" : "3==============");
+		log.debug(StringUtils.hasText(token) ? token + "3==============" : "3==============");
 		if (!StringUtils.hasText(token)) {
 			return false;
 		}
 		var claims = this.parseClaims(token);
-		log.info("claims{}{}", claims.keySet(),claims.values() + "4==============");
-		log.info("now, expire{}{}", claims.getIssuedAt(),claims.getExpiration() + "5==============");
+		log.debug("claims{}{}", claims.keySet(),claims.values() + "4==============");
+		log.debug("now, expire{}{}", claims.getIssuedAt(),claims.getExpiration() + "5==============");
 		return !claims.getExpiration().before(new Date());
 	}
 

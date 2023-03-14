@@ -2,7 +2,6 @@ spring:
   application:
     name: zerobase-stock_dividend_project
 
-
   h2:
     console:
       enabled: true
@@ -32,3 +31,5 @@ spring:
 scheduler:
   scrap:
     yahoo: "0 0 0 * * *"
+logging:
+  config: classpath:logback-spring.xml
